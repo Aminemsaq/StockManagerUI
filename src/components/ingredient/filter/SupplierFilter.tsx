@@ -6,42 +6,36 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 
-import type { Category } from "@/types/category";
+import type { Supplier } from "@/types/supplier";
+import { getSuppliers } from "@/service/supplierService";
 
-import {
-  getCategories,
-} from "@/service/categoryService";
-
-interface CategoryFilterProps {
+interface SupplierFilterProps {
   value: string;
   onChange: (value: string) => void;
 }
 
-const CategoryFilter = ({
+const SupplierFilter = ({
   value,
   onChange,
-}: CategoryFilterProps) => {
-  const [categories, setCategories] =
-    useState<Category[]>([]);
+}: SupplierFilterProps) => {
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchSuppliers = async () => {
       try {
-        const data =
-          await getCategories();
-
-        setCategories(data);
+        const data = await getSuppliers();
+        setSuppliers(data);
       } catch (error) {
         console.error(
-          "Failed to fetch categories:",
+          "Failed to fetch suppliers:",
           error
         );
       }
     };
 
-    fetchCategories();
+    fetchSuppliers();
   }, []);
 
   return (
@@ -58,7 +52,7 @@ const CategoryFilter = ({
           bg-white
           px-3
           text-sm
-          shadow-sm
+          transition-colors
 
           focus-visible:border-orange-500
           focus-visible:ring-2
@@ -66,9 +60,10 @@ const CategoryFilter = ({
 
           dark:border-slate-700
           dark:bg-slate-900
+          dark:text-white
         "
       >
-        <SelectValue placeholder="All Categories" />
+        <SelectValue placeholder="All Suppliers" />
       </SelectTrigger>
 
       <SelectContent
@@ -84,19 +79,19 @@ const CategoryFilter = ({
         "
       >
         <SelectItem
-          value="All Categories"
+          value="All Suppliers"
           className="rounded-md text-sm"
         >
-          All Categories
+          All Suppliers
         </SelectItem>
 
-        {categories.map((category) => (
+        {suppliers.map((supplier) => (
           <SelectItem
-            key={category.id}
-            value={category.title}
+            key={supplier.id}
+            value={supplier.name}
             className="rounded-md text-sm"
           >
-            {category.title}
+            {supplier.name}
           </SelectItem>
         ))}
       </SelectContent>
@@ -104,4 +99,4 @@ const CategoryFilter = ({
   );
 };
 
-export default CategoryFilter;
+export default SupplierFilter;

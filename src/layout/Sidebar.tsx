@@ -90,7 +90,6 @@ const SideBar = ({
         ${isOpen ? "w-[252px]" : "w-[64px]"}
       `}
     >
-      {/* Sidebar Header */}
       <div
         className={`
           flex
@@ -126,7 +125,6 @@ const SideBar = ({
         )}
       </div>
 
-      {/* Navigation */}
       <nav
         className={`
           flex-1
@@ -136,7 +134,6 @@ const SideBar = ({
       >
         <div className="space-y-1">
 
-          {/* Dashboard */}
           <SidebarItem
             isOpen={isOpen}
             to="/dashboard"
@@ -149,7 +146,6 @@ const SideBar = ({
             label="Dashboard"
           />
 
-          {/* Inventory */}
           <SidebarItem
             isOpen={isOpen}
             to="/inventory"
@@ -162,7 +158,6 @@ const SideBar = ({
             label="Inventory"
           />
 
-          {/* Stock Movements */}
           <SidebarItem
             isOpen={isOpen}
             to="/stock-movements"
@@ -175,7 +170,6 @@ const SideBar = ({
             label="Stock Movements"
           />
 
-          {/* Purchase Orders */}
           <SidebarItem
             isOpen={isOpen}
             to="/purchase-orders"
@@ -188,7 +182,7 @@ const SideBar = ({
             label="Purchase Orders"
           />
 
-          {/* Reports */}
+
           <SidebarItem
             isOpen={isOpen}
             to="/reports"
@@ -204,7 +198,6 @@ const SideBar = ({
         </div>
       </nav>
 
-      {/* User Profile */}
       <div
         className="
           shrink-0
@@ -232,7 +225,6 @@ const SideBar = ({
             }
           `}
         >
-          {/* User Avatar */}
           <div
             className="
               flex
@@ -252,7 +244,6 @@ const SideBar = ({
             MA
           </div>
 
-          {/* User Name + Role */}
           {isOpen && (
             <div className="min-w-0 flex-1 text-left">
               <div
@@ -281,7 +272,6 @@ const SideBar = ({
         </button>
       </div>
 
-      {/* Collapse Button */}
       <div
         className={`
           shrink-0

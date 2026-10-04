@@ -13,12 +13,18 @@ const DashboardLayout = ({
     useState(true);
 
   return (
-    <div className="min-h-screen bg-white">
-
+    <div
+      className="
+        min-h-screen
+        w-full
+        bg-[#191919]
+      "
+    >
       <Sidebar
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
       />
+
       <div
         className={`
           min-h-screen
@@ -26,7 +32,6 @@ const DashboardLayout = ({
           transition-[margin]
           duration-200
           ease-out
-
           ${
             isSidebarOpen
               ? "lg:ml-[252px]"
@@ -36,9 +41,9 @@ const DashboardLayout = ({
       >
         <main
           className="
-            min-h-[calc(100vh-76px)]
+            min-h-screen
             w-full
-            bg-white
+            bg-[#f3f4f6]
           "
         >
           {children}

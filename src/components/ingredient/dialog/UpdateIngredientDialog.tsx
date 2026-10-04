@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { PackageCheck } from "lucide-react";
 
 import {
   Dialog,
@@ -6,10 +7,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
 
 import {
   Select,
@@ -17,9 +18,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 import type { Category } from "@/types/category";
 import type { Supplier } from "@/types/supplier";
@@ -44,29 +45,22 @@ const UpdateIngredientDialog = ({
   onOpenChange,
   onIngredientUpdated,
 }: UpdateIngredientDialogProps) => {
-  const [categories, setCategories] =
-    useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  const [suppliers, setSuppliers] =
-    useState<Supplier[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
 
   const [name, setName] = useState("");
-  const [categoryId, setCategoryId] =
-    useState("");
+  const [categoryId, setCategoryId] = useState("");
 
-  const [supplierId, setSupplierId] =
-    useState("");
+  const [supplierId, setSupplierId] = useState("");
 
-  const [minimumStock, setMinimumStock] =
-    useState("");
+  const [minimumStock, setMinimumStock] = useState("");
 
   const [price, setPrice] = useState("");
 
   const [unit, setUnit] = useState("");
 
-  const [isSaving, setIsSaving] =
-    useState(false);
-
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -84,7 +78,6 @@ const UpdateIngredientDialog = ({
 
     fetchCategories();
   }, []);
-
 
   useEffect(() => {
     const fetchSuppliers = async () => {
@@ -114,9 +107,7 @@ const UpdateIngredientDialog = ({
       String(ingredient.minimumStock)
     );
 
-    setPrice(
-      String(ingredient.price)
-    );
+    setPrice(String(ingredient.price));
 
     setUnit(ingredient.unit);
 
@@ -126,9 +117,7 @@ const UpdateIngredientDialog = ({
     );
 
     if (category) {
-      setCategoryId(
-        String(category.id)
-      );
+      setCategoryId(String(category.id));
     }
 
     const supplier = suppliers.find(
@@ -137,9 +126,7 @@ const UpdateIngredientDialog = ({
     );
 
     if (supplier) {
-      setSupplierId(
-        String(supplier.id)
-      );
+      setSupplierId(String(supplier.id));
     }
   }, [
     ingredient,
@@ -147,19 +134,15 @@ const UpdateIngredientDialog = ({
     suppliers,
   ]);
 
-  const selectedCategory =
-    categories.find(
-      (category) =>
-        String(category.id) ===
-        categoryId
-    );
+  const selectedCategory = categories.find(
+    (category) =>
+      String(category.id) === categoryId
+  );
 
-  const selectedSupplier =
-    suppliers.find(
-      (supplier) =>
-        String(supplier.id) ===
-        supplierId
-    );
+  const selectedSupplier = suppliers.find(
+    (supplier) =>
+      String(supplier.id) === supplierId
+  );
 
   const handleSubmit = async () => {
     if (!ingredient) {
@@ -227,7 +210,7 @@ const UpdateIngredientDialog = ({
           border-slate-200
           bg-white
           p-0
-          shadow-2xl
+          shadow-none
 
           dark:border-slate-800
           dark:bg-slate-950
@@ -245,32 +228,57 @@ const UpdateIngredientDialog = ({
             dark:bg-slate-900/50
           "
         >
-          <DialogTitle
-            className="
-              text-xl
-              font-semibold
-              tracking-tight
-              text-slate-900
+          <div className="flex items-start gap-4">
+            <div
+              className="
+                flex
+                h-10
+                w-10
+                shrink-0
+                items-center
+                justify-center
+                rounded-lg
+                bg-orange-50
+                text-orange-600
 
-              dark:text-white
-            "
-          >
-            Update Ingredient
-          </DialogTitle>
+                dark:bg-orange-950/40
+                dark:text-orange-400
+              "
+            >
+              <PackageCheck
+                className="h-5 w-5"
+                strokeWidth={1.8}
+              />
+            </div>
 
-          <DialogDescription
-            className="
-              mt-1
-              text-sm
-              leading-5
-              text-slate-500
+            <div className="min-w-0">
+              <DialogTitle
+                className="
+                  text-base
+                  font-semibold
+                  tracking-tight
+                  text-slate-900
 
-              dark:text-slate-400
-            "
-          >
-            Update the information for this
-            ingredient.
-          </DialogDescription>
+                  dark:text-white
+                "
+              >
+                Update Ingredient
+              </DialogTitle>
+
+              <DialogDescription
+                className="
+                  text-sm
+                  leading-5
+                  text-slate-500
+
+                  dark:text-slate-400
+                "
+              >
+                Update the information for this
+                ingredient
+              </DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
         <div
@@ -282,7 +290,6 @@ const UpdateIngredientDialog = ({
           "
         >
           <div className="space-y-6">
-
             <div className="space-y-2">
               <Label
                 htmlFor="update-name"
@@ -302,9 +309,7 @@ const UpdateIngredientDialog = ({
                 placeholder="e.g. Tomato"
                 value={name}
                 onChange={(event) =>
-                  setName(
-                    event.target.value
-                  )
+                  setName(event.target.value)
                 }
                 className="
                   h-10
@@ -313,16 +318,16 @@ const UpdateIngredientDialog = ({
                   bg-white
                   px-3
                   text-sm
-                  shadow-sm
-                  transition-all
+                  shadow-none
+                  transition-colors
 
                   placeholder:text-slate-400
 
                   hover:border-slate-300
 
-                  focus:border-orange-500
-                  focus:ring-2
-                  focus:ring-orange-500/20
+                  focus-visible:border-orange-500
+                  focus-visible:ring-2
+                  focus-visible:ring-orange-500/20
 
                   dark:border-slate-700
                   dark:bg-slate-900
@@ -354,9 +359,7 @@ const UpdateIngredientDialog = ({
 
                 <Select
                   value={categoryId}
-                  onValueChange={
-                    setCategoryId
-                  }
+                  onValueChange={setCategoryId}
                 >
                   <SelectTrigger
                     className="
@@ -367,14 +370,14 @@ const UpdateIngredientDialog = ({
                       bg-white
                       px-3
                       text-sm
-                      shadow-sm
-                      transition-all
+                      shadow-none
+                      transition-colors
 
                       hover:border-slate-300
 
-                      focus:border-orange-500
-                      focus:ring-2
-                      focus:ring-orange-500/20
+                      focus-visible:border-orange-500
+                      focus-visible:ring-2
+                      focus-visible:ring-orange-500/20
 
                       data-[state=open]:border-orange-500
                       data-[state=open]:ring-2
@@ -394,38 +397,35 @@ const UpdateIngredientDialog = ({
                     className="
                       rounded-lg
                       border-slate-200
+                      bg-white
                       p-1
-                      shadow-xl
+                      shadow-none
 
                       dark:border-slate-700
                       dark:bg-slate-900
                     "
                   >
-                    {categories.map(
-                      (category) => (
-                        <SelectItem
-                          key={category.id}
-                          value={String(
-                            category.id
-                          )}
-                          className="
-                            rounded-md
-                            px-3
-                            py-2
-                            text-sm
-                            outline-none
+                    {categories.map((category) => (
+                      <SelectItem
+                        key={category.id}
+                        value={String(category.id)}
+                        className="
+                          rounded-md
+                          px-3
+                          py-2
+                          text-sm
+                          outline-none
 
-                            focus:bg-orange-50
-                            focus:text-orange-700
+                          focus:bg-orange-50
+                          focus:text-orange-700
 
-                            dark:focus:bg-orange-950
-                            dark:focus:text-orange-400
-                          "
-                        >
-                          {category.title}
-                        </SelectItem>
-                      )
-                    )}
+                          dark:focus:bg-orange-950
+                          dark:focus:text-orange-400
+                        "
+                      >
+                        {category.title}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -445,9 +445,7 @@ const UpdateIngredientDialog = ({
 
                 <Select
                   value={supplierId}
-                  onValueChange={
-                    setSupplierId
-                  }
+                  onValueChange={setSupplierId}
                 >
                   <SelectTrigger
                     className="
@@ -458,14 +456,14 @@ const UpdateIngredientDialog = ({
                       bg-white
                       px-3
                       text-sm
-                      shadow-sm
-                      transition-all
+                      shadow-none
+                      transition-colors
 
                       hover:border-slate-300
 
-                      focus:border-orange-500
-                      focus:ring-2
-                      focus:ring-orange-500/20
+                      focus-visible:border-orange-500
+                      focus-visible:ring-2
+                      focus-visible:ring-orange-500/20
 
                       data-[state=open]:border-orange-500
                       data-[state=open]:ring-2
@@ -485,38 +483,35 @@ const UpdateIngredientDialog = ({
                     className="
                       rounded-lg
                       border-slate-200
+                      bg-white
                       p-1
-                      shadow-xl
+                      shadow-none
 
                       dark:border-slate-700
                       dark:bg-slate-900
                     "
                   >
-                    {suppliers.map(
-                      (supplier) => (
-                        <SelectItem
-                          key={supplier.id}
-                          value={String(
-                            supplier.id
-                          )}
-                          className="
-                            rounded-md
-                            px-3
-                            py-2
-                            text-sm
-                            outline-none
+                    {suppliers.map((supplier) => (
+                      <SelectItem
+                        key={supplier.id}
+                        value={String(supplier.id)}
+                        className="
+                          rounded-md
+                          px-3
+                          py-2
+                          text-sm
+                          outline-none
 
-                            focus:bg-orange-50
-                            focus:text-orange-700
+                          focus:bg-orange-50
+                          focus:text-orange-700
 
-                            dark:focus:bg-orange-950
-                            dark:focus:text-orange-400
-                          "
-                        >
-                          {supplier.name}
-                        </SelectItem>
-                      )
-                    )}
+                          dark:focus:bg-orange-950
+                          dark:focus:text-orange-400
+                        "
+                      >
+                        {supplier.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -562,16 +557,16 @@ const UpdateIngredientDialog = ({
                     bg-white
                     px-3
                     text-sm
-                    shadow-sm
-                    transition-all
+                    shadow-none
+                    transition-colors
 
                     placeholder:text-slate-400
 
                     hover:border-slate-300
 
-                    focus:border-orange-500
-                    focus:ring-2
-                    focus:ring-orange-500/20
+                    focus-visible:border-orange-500
+                    focus-visible:ring-2
+                    focus-visible:ring-orange-500/20
 
                     dark:border-slate-700
                     dark:bg-slate-900
@@ -602,9 +597,7 @@ const UpdateIngredientDialog = ({
                   placeholder="0.00"
                   value={price}
                   onChange={(event) =>
-                    setPrice(
-                      event.target.value
-                    )
+                    setPrice(event.target.value)
                   }
                   className="
                     h-10
@@ -613,16 +606,16 @@ const UpdateIngredientDialog = ({
                     bg-white
                     px-3
                     text-sm
-                    shadow-sm
-                    transition-all
+                    shadow-none
+                    transition-colors
 
                     placeholder:text-slate-400
 
                     hover:border-slate-300
 
-                    focus:border-orange-500
-                    focus:ring-2
-                    focus:ring-orange-500/20
+                    focus-visible:border-orange-500
+                    focus-visible:ring-2
+                    focus-visible:ring-orange-500/20
 
                     dark:border-slate-700
                     dark:bg-slate-900
@@ -660,14 +653,14 @@ const UpdateIngredientDialog = ({
                     bg-white
                     px-3
                     text-sm
-                    shadow-sm
-                    transition-all
+                    shadow-none
+                    transition-colors
 
                     hover:border-slate-300
 
-                    focus:border-orange-500
-                    focus:ring-2
-                    focus:ring-orange-500/20
+                    focus-visible:border-orange-500
+                    focus-visible:ring-2
+                    focus-visible:ring-orange-500/20
 
                     data-[state=open]:border-orange-500
                     data-[state=open]:ring-2
@@ -687,7 +680,7 @@ const UpdateIngredientDialog = ({
                     border-slate-200
                     bg-white
                     p-1
-                    shadow-xl
+                    shadow-none
 
                     dark:border-slate-700
                     dark:bg-slate-900
@@ -741,9 +734,7 @@ const UpdateIngredientDialog = ({
           <Button
             type="button"
             variant="outline"
-            onClick={() =>
-              onOpenChange(false)
-            }
+            onClick={() => onOpenChange(false)}
             disabled={isSaving}
             className="
               h-10
@@ -754,8 +745,8 @@ const UpdateIngredientDialog = ({
               text-sm
               font-medium
               text-slate-700
-              shadow-sm
-              transition-all
+              shadow-none
+              transition-colors
 
               hover:bg-slate-100
 
@@ -782,16 +773,16 @@ const UpdateIngredientDialog = ({
               text-sm
               font-semibold
               text-white
-              shadow-sm
-              transition-all
+              shadow-none
+              transition-colors
 
               hover:border-orange-700
               hover:bg-orange-700
-              hover:shadow-md
 
-              focus:ring-2
-              focus:ring-orange-500/30
-              focus:ring-offset-2
+              focus-visible:outline-none
+              focus-visible:ring-2
+              focus-visible:ring-orange-500/30
+              focus-visible:ring-offset-2
 
               disabled:cursor-not-allowed
               disabled:opacity-60

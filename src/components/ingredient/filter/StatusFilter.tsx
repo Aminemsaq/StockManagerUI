@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 
 interface StatusFilterProps {
   value: string;
@@ -29,7 +29,6 @@ const StatusFilter = ({
           bg-white
           px-3
           text-sm
-          shadow-sm
           transition-colors
 
           focus-visible:border-orange-500

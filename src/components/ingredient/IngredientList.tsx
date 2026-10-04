@@ -70,19 +70,7 @@ const IngredientList = ({
   onDelete,
 }: IngredientListProps) => {
   return (
-    <div
-      className="
-        w-full
-        min-w-0
-        overflow-hidden
-        rounded-xl
-        border
-        border-slate-200
-        bg-white
-        dark:border-slate-800
-        dark:bg-slate-950
-      "
-    >
+    <div className="w-full min-w-0 overflow-hidden">
       <div
         className="
           w-full
@@ -111,7 +99,7 @@ const IngredientList = ({
                 dark:border-slate-800
               "
             >
-              {/* NAME */}
+
               <TableHead
                 className="
                   w-[14%]
@@ -127,7 +115,6 @@ const IngredientList = ({
                 Name
               </TableHead>
 
-              {/* CATEGORY */}
               <TableHead
                 className="
                   w-[11%]
@@ -143,7 +130,6 @@ const IngredientList = ({
                 Category
               </TableHead>
 
-              {/* SUPPLIER */}
               <TableHead
                 className="
                   w-[17%]
@@ -159,7 +145,6 @@ const IngredientList = ({
                 Supplier
               </TableHead>
 
-              {/* QUANTITY */}
               <TableHead
                 className="
                   w-[10%]
@@ -175,7 +160,6 @@ const IngredientList = ({
                 Quantity
               </TableHead>
 
-              {/* PRICE */}
               <TableHead
                 className="
                   w-[9%]
@@ -191,7 +175,6 @@ const IngredientList = ({
                 Price
               </TableHead>
 
-              {/* MINIMUM STOCK */}
               <TableHead
                 className="
                   w-[10%]
@@ -207,7 +190,6 @@ const IngredientList = ({
                 Min. Stock
               </TableHead>
 
-              {/* EXPIRATION */}
               <TableHead
                 className="
                   w-[12%]
@@ -223,7 +205,6 @@ const IngredientList = ({
                 Expiration
               </TableHead>
 
-              {/* STATUS */}
               <TableHead
                 className="
                   w-[11%]
@@ -239,7 +220,6 @@ const IngredientList = ({
                 Status
               </TableHead>
 
-              {/* ACTIONS */}
               <TableHead
                 className="
                   w-[8%]
@@ -293,7 +273,6 @@ const IngredientList = ({
                       dark:hover:bg-slate-900/60
                     "
                   >
-                    {/* NAME */}
                     <TableCell
                       className="
                         min-w-0
@@ -318,7 +297,6 @@ const IngredientList = ({
                       </div>
                     </TableCell>
 
-                    {/* CATEGORY */}
                     <TableCell
                       className="
                         min-w-0
@@ -342,7 +320,6 @@ const IngredientList = ({
                       </div>
                     </TableCell>
 
-                    {/* SUPPLIER */}
                     <TableCell
                       className="
                         min-w-0
@@ -366,7 +343,6 @@ const IngredientList = ({
                       </div>
                     </TableCell>
 
-                    {/* QUANTITY */}
                     <TableCell
                       className="
                         px-2
@@ -396,7 +372,6 @@ const IngredientList = ({
                       </span>
                     </TableCell>
 
-                    {/* PRICE */}
                     <TableCell
                       className="
                         px-2
@@ -412,7 +387,6 @@ const IngredientList = ({
                       €{ingredient.price.toFixed(2)}
                     </TableCell>
 
-                    {/* MINIMUM STOCK */}
                     <TableCell
                       className="
                         px-2
@@ -441,7 +415,6 @@ const IngredientList = ({
                       </span>
                     </TableCell>
 
-                    {/* EXPIRATION */}
                     <TableCell
                       className="
                         min-w-0
@@ -465,7 +438,6 @@ const IngredientList = ({
                       </div>
                     </TableCell>
 
-                    {/* STATUS */}
                     <TableCell
                       className="
                         px-2
@@ -510,7 +482,6 @@ const IngredientList = ({
                       </Badge>
                     </TableCell>
 
-                    {/* ACTIONS */}
                     <TableCell
                       className="
                         px-1
@@ -525,7 +496,7 @@ const IngredientList = ({
                           gap-0
                         "
                       >
-                        {/* UPDATE */}
+
                         <button
                           type="button"
                           title="Update ingredient"
@@ -559,7 +530,6 @@ const IngredientList = ({
                           />
                         </button>
 
-                        {/* DELETE */}
                         <button
                           type="button"
                           title="Delete ingredient"

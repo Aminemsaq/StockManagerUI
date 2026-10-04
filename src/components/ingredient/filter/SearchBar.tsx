@@ -12,7 +12,7 @@ const SearchBar = ({
   onChange,
 }: SearchBarProps) => {
   return (
-    <div className="relative w-full max-w-sm">
+    <div className="relative w-full">
       <Search
         className="
           pointer-events-none
@@ -22,13 +22,13 @@ const SearchBar = ({
           h-4
           w-4
           -translate-y-1/2
-          text-muted-foreground
+          text-slate-400
         "
       />
 
       <Input
         type="search"
-        placeholder="Search ingredients..."
+        placeholder="Search ingredients"
         value={value}
         onChange={(event) =>
           onChange(event.target.value)
@@ -42,13 +42,12 @@ const SearchBar = ({
           pl-9
           pr-3
           text-sm
-          shadow-sm
+          text-slate-900
           placeholder:text-slate-400
 
           focus-visible:border-orange-500
           focus-visible:ring-2
           focus-visible:ring-orange-500/20
-
           dark:border-slate-700
           dark:bg-slate-900
         "

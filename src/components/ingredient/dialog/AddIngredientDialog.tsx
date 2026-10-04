@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { PackagePlus } from "lucide-react";
 
 import {
   Dialog,
@@ -6,10 +7,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
 
 import {
   Select,
@@ -17,26 +18,20 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 import type { Category } from "@/types/category";
 import type { Supplier } from "@/types/supplier";
 
 import { UNITS } from "@/types/ingredient";
 
-import {
-  getCategories,
-} from "@/service/categoryService";
+import { getCategories } from "@/service/categoryService";
 
-import {
-  getSuppliers,
-} from "@/service/supplierService";
+import { getSuppliers } from "@/service/supplierService";
 
-import {
-  createIngredient,
-} from "@/service/ingredientService";
+import { createIngredient } from "@/service/ingredientService";
 
 interface AddIngredientDialogProps {
   open: boolean;
@@ -49,35 +44,25 @@ const AddIngredientDialog = ({
   onOpenChange,
   onIngredientCreated,
 }: AddIngredientDialogProps) => {
-  const [categories, setCategories] =
-    useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  const [suppliers, setSuppliers] =
-    useState<Supplier[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
 
-  const [name, setName] =
-    useState("");
+  const [name, setName] = useState("");
 
-  const [categoryId, setCategoryId] =
-    useState("");
+  const [categoryId, setCategoryId] = useState("");
 
-  const [supplierId, setSupplierId] =
-    useState("");
+  const [supplierId, setSupplierId] = useState("");
 
-  const [quantity, setQuantity] =
-    useState("");
+  const [quantity, setQuantity] = useState("");
 
-  const [minimumStock, setMinimumStock] =
-    useState("");
+  const [minimumStock, setMinimumStock] = useState("");
 
-  const [price, setPrice] =
-    useState("");
+  const [price, setPrice] = useState("");
 
-  const [unit, setUnit] =
-    useState("");
+  const [unit, setUnit] = useState("");
 
-  const [expirationDate, setExpirationDate] =
-    useState("");
+  const [expirationDate, setExpirationDate] = useState("");
 
   /*
    * Fetch categories
@@ -85,8 +70,7 @@ const AddIngredientDialog = ({
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data =
-          await getCategories();
+        const data = await getCategories();
 
         setCategories(data);
       } catch (error) {
@@ -106,8 +90,7 @@ const AddIngredientDialog = ({
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
-        const data =
-          await getSuppliers();
+        const data = await getSuppliers();
 
         setSuppliers(data);
       } catch (error) {
@@ -121,17 +104,15 @@ const AddIngredientDialog = ({
     fetchSuppliers();
   }, []);
 
-  const selectedCategory =
-    categories.find(
-      (category) =>
-        String(category.id) === categoryId
-    );
+  const selectedCategory = categories.find(
+    (category) =>
+      String(category.id) === categoryId
+  );
 
-  const selectedSupplier =
-    suppliers.find(
-      (supplier) =>
-        String(supplier.id) === supplierId
-    );
+  const selectedSupplier = suppliers.find(
+    (supplier) =>
+      String(supplier.id) === supplierId
+  );
 
   /*
    * Create ingredient
@@ -152,6 +133,7 @@ const AddIngredientDialog = ({
       await createIngredient(ingredient);
 
       onIngredientCreated();
+
       onOpenChange(false);
 
       /*
@@ -188,7 +170,7 @@ const AddIngredientDialog = ({
           border-slate-200
           bg-white
           p-0
-          shadow-2xl
+          shadow-none
 
           dark:border-slate-800
           dark:bg-slate-950
@@ -207,35 +189,60 @@ const AddIngredientDialog = ({
             dark:bg-slate-900/50
           "
         >
-          <DialogTitle
-            className="
-              text-xl
-              font-semibold
-              tracking-tight
-              text-slate-900
+          <div className="flex items-start gap-4">
+            {/* Icon */}
+            <div
+              className="
+                flex
+                h-10
+                w-10
+                shrink-0
+                items-center
+                justify-center
+                rounded-lg
+                bg-orange-50
+                text-orange-600
 
-              dark:text-white
-            "
-          >
-            Add Ingredient
-          </DialogTitle>
+                dark:bg-orange-950/40
+                dark:text-orange-400
+              "
+            >
+              <PackagePlus
+                className="h-5 w-5"
+                strokeWidth={1.8}
+              />
+            </div>
 
-          <DialogDescription
-            className="
-              mt-1
-              text-sm
-              leading-5
-              text-slate-500
+            <div className="min-w-0">
+              <DialogTitle
+                className="
+                  text-base
+                    font-semibold
+                  tracking-tight
+                  text-slate-900
 
-              dark:text-slate-400
-            "
-          >
-            Add a new ingredient to your stock
-            inventory.
-          </DialogDescription>
+                  dark:text-white
+                "
+              >
+                Add Ingredient
+              </DialogTitle>
+
+              <DialogDescription
+                className="
+                  text-sm
+                  leading-5
+                  text-slate-500
+
+                  dark:text-slate-400
+                "
+              >
+                Add a new ingredient to your stock
+                inventory
+              </DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
-        {/* Form */}
         <div
           className="
             max-h-[65vh]
@@ -245,8 +252,6 @@ const AddIngredientDialog = ({
           "
         >
           <div className="space-y-6">
-
-            {/* Ingredient Name */}
             <div className="space-y-2">
               <Label
                 htmlFor="name"
@@ -275,16 +280,16 @@ const AddIngredientDialog = ({
                   bg-white
                   px-3
                   text-sm
-                  shadow-sm
-                  transition-all
+                  shadow-none
+                  transition-colors
 
                   placeholder:text-slate-400
 
                   hover:border-slate-300
 
-                  focus:border-orange-500
-                  focus:ring-2
-                  focus:ring-orange-500/20
+                  focus-visible:border-orange-500
+                  focus-visible:ring-2
+                  focus-visible:ring-orange-500/20
 
                   dark:border-slate-700
                   dark:bg-slate-900
@@ -293,7 +298,6 @@ const AddIngredientDialog = ({
               />
             </div>
 
-            {/* Category / Supplier */}
             <div
               className="
                 grid
@@ -302,7 +306,6 @@ const AddIngredientDialog = ({
                 sm:grid-cols-2
               "
             >
-              {/* Category */}
               <div className="space-y-2">
                 <Label
                   className="
@@ -329,14 +332,14 @@ const AddIngredientDialog = ({
                       bg-white
                       px-3
                       text-sm
-                      shadow-sm
-                      transition-all
+                      shadow-none
+                      transition-colors
 
                       hover:border-slate-300
 
-                      focus:border-orange-500
-                      focus:ring-2
-                      focus:ring-orange-500/20
+                      focus-visible:border-orange-500
+                      focus-visible:ring-2
+                      focus-visible:ring-orange-500/20
 
                       data-[state=open]:border-orange-500
                       data-[state=open]:ring-2
@@ -356,43 +359,39 @@ const AddIngredientDialog = ({
                     className="
                       rounded-lg
                       border-slate-200
+                      bg-white
                       p-1
-                      shadow-xl
+                      shadow-none
 
                       dark:border-slate-700
                       dark:bg-slate-900
                     "
                   >
-                    {categories.map(
-                      (category) => (
-                        <SelectItem
-                          key={category.id}
-                          value={String(
-                            category.id
-                          )}
-                          className="
-                            rounded-md
-                            px-3
-                            py-2
-                            text-sm
-                            outline-none
+                    {categories.map((category) => (
+                      <SelectItem
+                        key={category.id}
+                        value={String(category.id)}
+                        className="
+                          rounded-md
+                          px-3
+                          py-2
+                          text-sm
+                          outline-none
 
-                            focus:bg-orange-50
-                            focus:text-orange-700
+                          focus:bg-orange-50
+                          focus:text-orange-700
 
-                            dark:focus:bg-orange-950
-                            dark:focus:text-orange-400
-                          "
-                        >
-                          {category.title}
-                        </SelectItem>
-                      )
-                    )}
+                          dark:focus:bg-orange-950
+                          dark:focus:text-orange-400
+                        "
+                      >
+                        {category.title}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Supplier */}
               <div className="space-y-2">
                 <Label
                   className="
@@ -419,14 +418,14 @@ const AddIngredientDialog = ({
                       bg-white
                       px-3
                       text-sm
-                      shadow-sm
-                      transition-all
+                      shadow-none
+                      transition-colors
 
                       hover:border-slate-300
 
-                      focus:border-orange-500
-                      focus:ring-2
-                      focus:ring-orange-500/20
+                      focus-visible:border-orange-500
+                      focus-visible:ring-2
+                      focus-visible:ring-orange-500/20
 
                       data-[state=open]:border-orange-500
                       data-[state=open]:ring-2
@@ -446,44 +445,40 @@ const AddIngredientDialog = ({
                     className="
                       rounded-lg
                       border-slate-200
+                      bg-white
                       p-1
-                      shadow-xl
+                      shadow-none
 
                       dark:border-slate-700
                       dark:bg-slate-900
                     "
                   >
-                    {suppliers.map(
-                      (supplier) => (
-                        <SelectItem
-                          key={supplier.id}
-                          value={String(
-                            supplier.id
-                          )}
-                          className="
-                            rounded-md
-                            px-3
-                            py-2
-                            text-sm
-                            outline-none
+                    {suppliers.map((supplier) => (
+                      <SelectItem
+                        key={supplier.id}
+                        value={String(supplier.id)}
+                        className="
+                          rounded-md
+                          px-3
+                          py-2
+                          text-sm
+                          outline-none
 
-                            focus:bg-orange-50
-                            focus:text-orange-700
+                          focus:bg-orange-50
+                          focus:text-orange-700
 
-                            dark:focus:bg-orange-950
-                            dark:focus:text-orange-400
-                          "
-                        >
-                          {supplier.name}
-                        </SelectItem>
-                      )
-                    )}
+                          dark:focus:bg-orange-950
+                          dark:focus:text-orange-400
+                        "
+                      >
+                        {supplier.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
-            {/* Quantity / Minimum Stock */}
             <div
               className="
                 grid
@@ -492,7 +487,7 @@ const AddIngredientDialog = ({
                 sm:grid-cols-2
               "
             >
-              {/* Quantity */}
+            
               <div className="space-y-2">
                 <Label
                   htmlFor="quantity"
@@ -514,9 +509,7 @@ const AddIngredientDialog = ({
                   placeholder="0"
                   value={quantity}
                   onChange={(event) =>
-                    setQuantity(
-                      event.target.value
-                    )
+                    setQuantity(event.target.value)
                   }
                   className="
                     h-10
@@ -525,16 +518,16 @@ const AddIngredientDialog = ({
                     bg-white
                     px-3
                     text-sm
-                    shadow-sm
-                    transition-all
+                    shadow-none
+                    transition-colors
 
                     placeholder:text-slate-400
 
                     hover:border-slate-300
 
-                    focus:border-orange-500
-                    focus:ring-2
-                    focus:ring-orange-500/20
+                    focus-visible:border-orange-500
+                    focus-visible:ring-2
+                    focus-visible:ring-orange-500/20
 
                     dark:border-slate-700
                     dark:bg-slate-900
@@ -543,7 +536,6 @@ const AddIngredientDialog = ({
                 />
               </div>
 
-              {/* Minimum Stock */}
               <div className="space-y-2">
                 <Label
                   htmlFor="minimumStock"
@@ -576,16 +568,16 @@ const AddIngredientDialog = ({
                     bg-white
                     px-3
                     text-sm
-                    shadow-sm
-                    transition-all
+                    shadow-none
+                    transition-colors
 
                     placeholder:text-slate-400
 
                     hover:border-slate-300
 
-                    focus:border-orange-500
-                    focus:ring-2
-                    focus:ring-orange-500/20
+                    focus-visible:border-orange-500
+                    focus-visible:ring-2
+                    focus-visible:ring-orange-500/20
 
                     dark:border-slate-700
                     dark:bg-slate-900
@@ -595,7 +587,6 @@ const AddIngredientDialog = ({
               </div>
             </div>
 
-            {/* Price / Unit */}
             <div
               className="
                 grid
@@ -604,7 +595,7 @@ const AddIngredientDialog = ({
                 sm:grid-cols-2
               "
             >
-              {/* Price */}
+
               <div className="space-y-2">
                 <Label
                   htmlFor="price"
@@ -627,9 +618,7 @@ const AddIngredientDialog = ({
                   placeholder="0.00"
                   value={price}
                   onChange={(event) =>
-                    setPrice(
-                      event.target.value
-                    )
+                    setPrice(event.target.value)
                   }
                   className="
                     h-10
@@ -638,16 +627,16 @@ const AddIngredientDialog = ({
                     bg-white
                     px-3
                     text-sm
-                    shadow-sm
-                    transition-all
+                    shadow-none
+                    transition-colors
 
                     placeholder:text-slate-400
 
                     hover:border-slate-300
 
-                    focus:border-orange-500
-                    focus:ring-2
-                    focus:ring-orange-500/20
+                    focus-visible:border-orange-500
+                    focus-visible:ring-2
+                    focus-visible:ring-orange-500/20
 
                     dark:border-slate-700
                     dark:bg-slate-900
@@ -656,7 +645,6 @@ const AddIngredientDialog = ({
                 />
               </div>
 
-              {/* Unit */}
               <div className="space-y-2">
                 <Label
                   htmlFor="unit"
@@ -685,14 +673,14 @@ const AddIngredientDialog = ({
                       bg-white
                       px-3
                       text-sm
-                      shadow-sm
-                      transition-all
+                      shadow-none
+                      transition-colors
 
                       hover:border-slate-300
 
-                      focus:border-orange-500
-                      focus:ring-2
-                      focus:ring-orange-500/20
+                      focus-visible:border-orange-500
+                      focus-visible:ring-2
+                      focus-visible:ring-orange-500/20
 
                       data-[state=open]:border-orange-500
                       data-[state=open]:ring-2
@@ -713,41 +701,38 @@ const AddIngredientDialog = ({
                       border-slate-200
                       bg-white
                       p-1
-                      shadow-xl
+                      shadow-none
 
                       dark:border-slate-700
                       dark:bg-slate-900
                     "
                   >
-                    {UNITS.map(
-                      (unitOption) => (
-                        <SelectItem
-                          key={unitOption}
-                          value={unitOption}
-                          className="
-                            rounded-md
-                            px-3
-                            py-2
-                            text-sm
-                            outline-none
+                    {UNITS.map((unitOption) => (
+                      <SelectItem
+                        key={unitOption}
+                        value={unitOption}
+                        className="
+                          rounded-md
+                          px-3
+                          py-2
+                          text-sm
+                          outline-none
 
-                            focus:bg-orange-50
-                            focus:text-orange-700
+                          focus:bg-orange-50
+                          focus:text-orange-700
 
-                            dark:focus:bg-orange-950
-                            dark:focus:text-orange-400
-                          "
-                        >
-                          {unitOption}
-                        </SelectItem>
-                      )
-                    )}
+                          dark:focus:bg-orange-950
+                          dark:focus:text-orange-400
+                        "
+                      >
+                        {unitOption}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
-            {/* Expiration Date */}
             <div className="space-y-2">
               <Label
                 htmlFor="expirationDate"
@@ -779,14 +764,14 @@ const AddIngredientDialog = ({
                   bg-white
                   px-3
                   text-sm
-                  shadow-sm
-                  transition-all
+                  shadow-none
+                  transition-colors
 
                   hover:border-slate-300
 
-                  focus:border-orange-500
-                  focus:ring-2
-                  focus:ring-orange-500/20
+                  focus-visible:border-orange-500
+                  focus-visible:ring-2
+                  focus-visible:ring-orange-500/20
 
                   dark:border-slate-700
                   dark:bg-slate-900
@@ -797,7 +782,6 @@ const AddIngredientDialog = ({
           </div>
         </div>
 
-        {/* Footer */}
         <div
           className="
             flex
@@ -819,9 +803,7 @@ const AddIngredientDialog = ({
           <Button
             type="button"
             variant="outline"
-            onClick={() =>
-              onOpenChange(false)
-            }
+            onClick={() => onOpenChange(false)}
             className="
               h-10
               rounded-lg
@@ -831,8 +813,8 @@ const AddIngredientDialog = ({
               text-sm
               font-medium
               text-slate-700
-              shadow-sm
-              transition-all
+              shadow-none
+              transition-colors
 
               hover:bg-slate-100
 
@@ -858,16 +840,16 @@ const AddIngredientDialog = ({
               text-sm
               font-semibold
               text-white
-              shadow-sm
-              transition-all
+              shadow-none
+              transition-colors
 
               hover:border-orange-700
               hover:bg-orange-700
-              hover:shadow-md
 
-              focus:ring-2
-              focus:ring-orange-500/30
-              focus:ring-offset-2
+              focus-visible:outline-none
+              focus-visible:ring-2
+              focus-visible:ring-orange-500/30
+              focus-visible:ring-offset-2
             "
           >
             Add Ingredient

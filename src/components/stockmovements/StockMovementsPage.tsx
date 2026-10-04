@@ -15,7 +15,6 @@ const StockMovementsPage = () => {
     >
       <div className="w-full min-w-0">
 
-        {/* Page Header */}
         <div className="mb-6">
           <h1
             className="
