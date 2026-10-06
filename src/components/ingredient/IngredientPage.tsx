@@ -345,7 +345,6 @@ const IngredientPage = () => {
               md:grid-cols-3
             "
           >
-            {/* Category */}
 
             <div className="min-w-0 w-full">
               <label
@@ -368,8 +367,6 @@ const IngredientPage = () => {
               </div>
             </div>
 
-            {/* Supplier */}
-
             <div className="min-w-0 w-full">
               <label
                 className="
@@ -390,8 +387,6 @@ const IngredientPage = () => {
                 />
               </div>
             </div>
-
-            {/* Status */}
 
             <div className="min-w-0 w-full">
               <label
@@ -415,10 +410,6 @@ const IngredientPage = () => {
             </div>
           </div>
         </section>
-
-        {/* ===================================================
-            RESULTS TOOLBAR
-        ==================================================== */}
 
         <div
           className="
@@ -496,10 +487,6 @@ const IngredientPage = () => {
           </div>
         </div>
 
-        {/* ===================================================
-            INGREDIENT TABLE
-        ==================================================== */}
-
         <section
           className="
             w-full
@@ -520,10 +507,6 @@ const IngredientPage = () => {
             />
           </div>
         </section>
-
-        {/* ===================================================
-            DIALOGS
-        ==================================================== */}
 
         <CategoryDialog
           open={isCategoryDialogOpen}

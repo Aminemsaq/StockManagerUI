@@ -48,10 +48,9 @@ const SidebarItem = ({
 
         ${isOpen ? "gap-3 px-4" : "justify-center"}
 
-        ${
-          isActive
-            ? "bg-white text-slate-900"
-            : "text-slate-300 hover:bg-white/[0.06] hover:text-white"
+        ${isActive
+          ? "bg-white text-slate-900"
+          : "text-slate-300 hover:bg-white/[0.06] hover:text-white"
         }
       `}
     >
@@ -90,6 +89,8 @@ const SideBar = ({
         ${isOpen ? "w-[252px]" : "w-[64px]"}
       `}
     >
+      {/* LOGO */}
+
       <div
         className={`
           flex
@@ -104,19 +105,39 @@ const SideBar = ({
       >
         {isOpen ? (
           <div>
-            <div className="text-[34px] font-semibold leading-none tracking-[-1px] text-white">
+            <div
+              className="
+                text-[34px]
+                font-semibold
+                leading-none
+                tracking-[-1px]
+                text-white
+              "
+            >
               Orde
               <span className="text-orange-500">
                 x
               </span>
             </div>
 
-            <div className="text-[11px] text-slate-400">
+            <div
+              className="
+                text-[11px]
+                text-slate-400
+              "
+            >
               Stock Manager
             </div>
           </div>
         ) : (
-          <div className="text-[30px] font-semibold tracking-[-1px] text-white">
+          <div
+            className="
+              text-[30px]
+              font-semibold
+              tracking-[-1px]
+              text-white
+            "
+          >
             O
             <span className="text-orange-500">
               x
@@ -124,6 +145,8 @@ const SideBar = ({
           </div>
         )}
       </div>
+
+      {/* NAVIGATION */}
 
       <nav
         className={`
@@ -133,6 +156,8 @@ const SideBar = ({
         `}
       >
         <div className="space-y-1">
+
+          {/* DASHBOARD */}
 
           <SidebarItem
             isOpen={isOpen}
@@ -146,6 +171,8 @@ const SideBar = ({
             label="Dashboard"
           />
 
+          {/* INVENTORY */}
+
           <SidebarItem
             isOpen={isOpen}
             to="/inventory"
@@ -158,6 +185,8 @@ const SideBar = ({
             label="Inventory"
           />
 
+          {/* MOVEMENTS */}
+
           <SidebarItem
             isOpen={isOpen}
             to="/stock-movements"
@@ -167,21 +196,10 @@ const SideBar = ({
                 strokeWidth={1.8}
               />
             }
-            label="Stock Movements"
+            label="Movements"
           />
 
-          <SidebarItem
-            isOpen={isOpen}
-            to="/purchase-orders"
-            icon={
-              <ShoppingCart
-                className="h-[18px] w-[18px]"
-                strokeWidth={1.8}
-              />
-            }
-            label="Purchase Orders"
-          />
-
+          {/* REPORTS */}
 
           <SidebarItem
             isOpen={isOpen}
@@ -198,6 +216,8 @@ const SideBar = ({
         </div>
       </nav>
 
+      {/* USER */}
+
       <div
         className="
           shrink-0
@@ -209,7 +229,11 @@ const SideBar = ({
       >
         <button
           type="button"
-          title={!isOpen ? "Msaq Amine" : undefined}
+          title={
+            !isOpen
+              ? "Msaq Amine"
+              : undefined
+          }
           className={`
             flex
             w-full
@@ -218,10 +242,9 @@ const SideBar = ({
             transition-colors
             duration-150
 
-            ${
-              isOpen
-                ? "gap-3 px-2 py-2 hover:bg-white/[0.06]"
-                : "justify-center p-1"
+            ${isOpen
+              ? "gap-3 px-2 py-2 hover:bg-white/[0.06]"
+              : "justify-center p-1"
             }
           `}
         >
@@ -272,6 +295,8 @@ const SideBar = ({
         </button>
       </div>
 
+      {/* SIDEBAR TOGGLE */}
+
       <div
         className={`
           shrink-0
@@ -279,7 +304,10 @@ const SideBar = ({
           border-white/[0.06]
           p-3
 
-          ${isOpen ? "flex justify-end" : "flex justify-center"}
+          ${isOpen
+            ? "flex justify-end"
+            : "flex justify-center"
+          }
         `}
       >
         <button

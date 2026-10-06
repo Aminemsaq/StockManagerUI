@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { PackageCheck } from "lucide-react";
 
 import {
@@ -46,27 +47,28 @@ const UpdateIngredientDialog = ({
   onIngredientUpdated,
 }: UpdateIngredientDialogProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
-
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
 
   const [name, setName] = useState("");
   const [categoryId, setCategoryId] = useState("");
-
   const [supplierId, setSupplierId] = useState("");
 
+  // Current available stock quantity
+  const [quantity, setQuantity] = useState("");
+
   const [minimumStock, setMinimumStock] = useState("");
-
   const [price, setPrice] = useState("");
-
   const [unit, setUnit] = useState("");
 
   const [isSaving, setIsSaving] = useState(false);
 
+  /*
+   * Fetch categories
+   */
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const data = await getCategories();
-
         setCategories(data);
       } catch (error) {
         console.error(
@@ -79,11 +81,13 @@ const UpdateIngredientDialog = ({
     fetchCategories();
   }, []);
 
+  /*
+   * Fetch suppliers
+   */
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
         const data = await getSuppliers();
-
         setSuppliers(data);
       } catch (error) {
         console.error(
@@ -96,6 +100,9 @@ const UpdateIngredientDialog = ({
     fetchSuppliers();
   }, []);
 
+  /*
+   * Fill form when ingredient changes
+   */
   useEffect(() => {
     if (!ingredient) {
       return;
@@ -103,11 +110,17 @@ const UpdateIngredientDialog = ({
 
     setName(ingredient.name);
 
-    setMinimumStock(
-      String(ingredient.minimumStock)
+    setQuantity(
+      String(ingredient.quantity ?? "")
     );
 
-    setPrice(String(ingredient.price));
+    setMinimumStock(
+      String(ingredient.minimumStock ?? "")
+    );
+
+    setPrice(
+      String(ingredient.price ?? "")
+    );
 
     setUnit(ingredient.unit);
 
@@ -144,18 +157,36 @@ const UpdateIngredientDialog = ({
       String(supplier.id) === supplierId
   );
 
+  /*
+   * Submit update
+   */
   const handleSubmit = async () => {
     if (!ingredient) {
       return;
     }
 
+    /*
+     * Basic validation
+     */
     if (
       !name.trim() ||
       !categoryId ||
       !supplierId ||
+      !quantity ||
       !minimumStock ||
       !price ||
       !unit.trim()
+    ) {
+      return;
+    }
+
+    /*
+     * Prevent negative numeric values
+     */
+    if (
+      Number(quantity) < 0 ||
+      Number(minimumStock) < 0 ||
+      Number(price) < 0
     ) {
       return;
     }
@@ -164,6 +195,7 @@ const UpdateIngredientDialog = ({
       name: name.trim(),
       categoryId: Number(categoryId),
       supplierId: Number(supplierId),
+      quantity: Number(quantity),
       minimumStock: Number(minimumStock),
       price: Number(price),
       unit: unit.trim(),
@@ -183,7 +215,6 @@ const UpdateIngredientDialog = ({
       );
 
       onIngredientUpdated();
-
       onOpenChange(false);
     } catch (error) {
       console.error(
@@ -211,11 +242,11 @@ const UpdateIngredientDialog = ({
           bg-white
           p-0
           shadow-none
-
           dark:border-slate-800
           dark:bg-slate-950
         "
       >
+        {/* Header */}
         <DialogHeader
           className="
             border-b
@@ -223,7 +254,6 @@ const UpdateIngredientDialog = ({
             bg-slate-50/70
             px-6
             py-5
-
             dark:border-slate-800
             dark:bg-slate-900/50
           "
@@ -240,7 +270,6 @@ const UpdateIngredientDialog = ({
                 rounded-lg
                 bg-orange-50
                 text-orange-600
-
                 dark:bg-orange-950/40
                 dark:text-orange-400
               "
@@ -258,7 +287,6 @@ const UpdateIngredientDialog = ({
                   font-semibold
                   tracking-tight
                   text-slate-900
-
                   dark:text-white
                 "
               >
@@ -270,7 +298,6 @@ const UpdateIngredientDialog = ({
                   text-sm
                   leading-5
                   text-slate-500
-
                   dark:text-slate-400
                 "
               >
@@ -281,6 +308,7 @@ const UpdateIngredientDialog = ({
           </div>
         </DialogHeader>
 
+        {/* Form */}
         <div
           className="
             max-h-[65vh]
@@ -290,6 +318,8 @@ const UpdateIngredientDialog = ({
           "
         >
           <div className="space-y-6">
+
+            {/* Ingredient Name */}
             <div className="space-y-2">
               <Label
                 htmlFor="update-name"
@@ -297,7 +327,6 @@ const UpdateIngredientDialog = ({
                   text-sm
                   font-medium
                   text-slate-700
-
                   dark:text-slate-200
                 "
               >
@@ -320,15 +349,11 @@ const UpdateIngredientDialog = ({
                   text-sm
                   shadow-none
                   transition-colors
-
                   placeholder:text-slate-400
-
                   hover:border-slate-300
-
                   focus-visible:border-orange-500
                   focus-visible:ring-2
                   focus-visible:ring-orange-500/20
-
                   dark:border-slate-700
                   dark:bg-slate-900
                   dark:text-white
@@ -336,6 +361,7 @@ const UpdateIngredientDialog = ({
               />
             </div>
 
+            {/* Category + Supplier */}
             <div
               className="
                 grid
@@ -344,13 +370,13 @@ const UpdateIngredientDialog = ({
                 sm:grid-cols-2
               "
             >
+              {/* Category */}
               <div className="space-y-2">
                 <Label
                   className="
                     text-sm
                     font-medium
                     text-slate-700
-
                     dark:text-slate-200
                   "
                 >
@@ -372,17 +398,13 @@ const UpdateIngredientDialog = ({
                       text-sm
                       shadow-none
                       transition-colors
-
                       hover:border-slate-300
-
                       focus-visible:border-orange-500
                       focus-visible:ring-2
                       focus-visible:ring-orange-500/20
-
                       data-[state=open]:border-orange-500
                       data-[state=open]:ring-2
                       data-[state=open]:ring-orange-500/20
-
                       dark:border-slate-700
                       dark:bg-slate-900
                       dark:text-white
@@ -400,7 +422,6 @@ const UpdateIngredientDialog = ({
                       bg-white
                       p-1
                       shadow-none
-
                       dark:border-slate-700
                       dark:bg-slate-900
                     "
@@ -415,10 +436,8 @@ const UpdateIngredientDialog = ({
                           py-2
                           text-sm
                           outline-none
-
                           focus:bg-orange-50
                           focus:text-orange-700
-
                           dark:focus:bg-orange-950
                           dark:focus:text-orange-400
                         "
@@ -430,13 +449,13 @@ const UpdateIngredientDialog = ({
                 </Select>
               </div>
 
+              {/* Supplier */}
               <div className="space-y-2">
                 <Label
                   className="
                     text-sm
                     font-medium
                     text-slate-700
-
                     dark:text-slate-200
                   "
                 >
@@ -458,17 +477,13 @@ const UpdateIngredientDialog = ({
                       text-sm
                       shadow-none
                       transition-colors
-
                       hover:border-slate-300
-
                       focus-visible:border-orange-500
                       focus-visible:ring-2
                       focus-visible:ring-orange-500/20
-
                       data-[state=open]:border-orange-500
                       data-[state=open]:ring-2
                       data-[state=open]:ring-orange-500/20
-
                       dark:border-slate-700
                       dark:bg-slate-900
                       dark:text-white
@@ -486,7 +501,6 @@ const UpdateIngredientDialog = ({
                       bg-white
                       p-1
                       shadow-none
-
                       dark:border-slate-700
                       dark:bg-slate-900
                     "
@@ -501,10 +515,8 @@ const UpdateIngredientDialog = ({
                           py-2
                           text-sm
                           outline-none
-
                           focus:bg-orange-50
                           focus:text-orange-700
-
                           dark:focus:bg-orange-950
                           dark:focus:text-orange-400
                         "
@@ -517,6 +529,7 @@ const UpdateIngredientDialog = ({
               </div>
             </div>
 
+            {/* Quantity + Minimum Stock */}
             <div
               className="
                 grid
@@ -525,6 +538,52 @@ const UpdateIngredientDialog = ({
                 sm:grid-cols-2
               "
             >
+              {/* Quantity */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="update-quantity"
+                  className="
+                    text-sm
+                    font-medium
+                    text-slate-700
+                    dark:text-slate-200
+                  "
+                >
+                  Quantity
+                </Label>
+
+                <Input
+                  id="update-quantity"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0"
+                  value={quantity}
+                  onChange={(event) =>
+                    setQuantity(event.target.value)
+                  }
+                  className="
+                    h-10
+                    rounded-lg
+                    border-slate-200
+                    bg-white
+                    px-3
+                    text-sm
+                    shadow-none
+                    transition-colors
+                    placeholder:text-slate-400
+                    hover:border-slate-300
+                    focus-visible:border-orange-500
+                    focus-visible:ring-2
+                    focus-visible:ring-orange-500/20
+                    dark:border-slate-700
+                    dark:bg-slate-900
+                    dark:text-white
+                  "
+                />
+              </div>
+
+              {/* Minimum Stock */}
               <div className="space-y-2">
                 <Label
                   htmlFor="update-minimum-stock"
@@ -532,7 +591,6 @@ const UpdateIngredientDialog = ({
                     text-sm
                     font-medium
                     text-slate-700
-
                     dark:text-slate-200
                   "
                 >
@@ -543,6 +601,7 @@ const UpdateIngredientDialog = ({
                   id="update-minimum-stock"
                   type="number"
                   min="0"
+                  step="0.01"
                   placeholder="0"
                   value={minimumStock}
                   onChange={(event) =>
@@ -559,22 +618,29 @@ const UpdateIngredientDialog = ({
                     text-sm
                     shadow-none
                     transition-colors
-
                     placeholder:text-slate-400
-
                     hover:border-slate-300
-
                     focus-visible:border-orange-500
                     focus-visible:ring-2
                     focus-visible:ring-orange-500/20
-
                     dark:border-slate-700
                     dark:bg-slate-900
                     dark:text-white
                   "
                 />
               </div>
+            </div>
 
+            {/* Price + Unit */}
+            <div
+              className="
+                grid
+                grid-cols-1
+                gap-5
+                sm:grid-cols-2
+              "
+            >
+              {/* Price */}
               <div className="space-y-2">
                 <Label
                   htmlFor="update-price"
@@ -582,7 +648,6 @@ const UpdateIngredientDialog = ({
                     text-sm
                     font-medium
                     text-slate-700
-
                     dark:text-slate-200
                   "
                 >
@@ -608,111 +673,101 @@ const UpdateIngredientDialog = ({
                     text-sm
                     shadow-none
                     transition-colors
-
                     placeholder:text-slate-400
-
                     hover:border-slate-300
-
                     focus-visible:border-orange-500
                     focus-visible:ring-2
                     focus-visible:ring-orange-500/20
-
                     dark:border-slate-700
                     dark:bg-slate-900
                     dark:text-white
                   "
                 />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label
-                htmlFor="update-unit"
-                className="
-                  text-sm
-                  font-medium
-                  text-slate-700
-
-                  dark:text-slate-200
-                "
-              >
-                Unit
-              </Label>
-
-              <Select
-                value={unit}
-                onValueChange={setUnit}
-              >
-                <SelectTrigger
-                  id="update-unit"
+              {/* Unit */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="update-unit"
                   className="
-                    h-10
-                    w-full
-                    rounded-lg
-                    border-slate-200
-                    bg-white
-                    px-3
                     text-sm
-                    shadow-none
-                    transition-colors
-
-                    hover:border-slate-300
-
-                    focus-visible:border-orange-500
-                    focus-visible:ring-2
-                    focus-visible:ring-orange-500/20
-
-                    data-[state=open]:border-orange-500
-                    data-[state=open]:ring-2
-                    data-[state=open]:ring-orange-500/20
-
-                    dark:border-slate-700
-                    dark:bg-slate-900
-                    dark:text-white
+                    font-medium
+                    text-slate-700
+                    dark:text-slate-200
                   "
                 >
-                  <SelectValue placeholder="Select unit" />
-                </SelectTrigger>
+                  Unit
+                </Label>
 
-                <SelectContent
-                  className="
-                    rounded-lg
-                    border-slate-200
-                    bg-white
-                    p-1
-                    shadow-none
-
-                    dark:border-slate-700
-                    dark:bg-slate-900
-                  "
+                <Select
+                  value={unit}
+                  onValueChange={setUnit}
                 >
-                  {UNITS.map((item) => (
-                    <SelectItem
-                      key={item}
-                      value={item}
-                      className="
-                        rounded-md
-                        px-3
-                        py-2
-                        text-sm
-                        outline-none
+                  <SelectTrigger
+                    id="update-unit"
+                    className="
+                      h-10
+                      w-full
+                      rounded-lg
+                      border-slate-200
+                      bg-white
+                      px-3
+                      text-sm
+                      shadow-none
+                      transition-colors
+                      hover:border-slate-300
+                      focus-visible:border-orange-500
+                      focus-visible:ring-2
+                      focus-visible:ring-orange-500/20
+                      data-[state=open]:border-orange-500
+                      data-[state=open]:ring-2
+                      data-[state=open]:ring-orange-500/20
+                      dark:border-slate-700
+                      dark:bg-slate-900
+                      dark:text-white
+                    "
+                  >
+                    <SelectValue placeholder="Select unit" />
+                  </SelectTrigger>
 
-                        focus:bg-orange-50
-                        focus:text-orange-700
-
-                        dark:focus:bg-orange-950
-                        dark:focus:text-orange-400
-                      "
-                    >
-                      {item}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  <SelectContent
+                    className="
+                      rounded-lg
+                      border-slate-200
+                      bg-white
+                      p-1
+                      shadow-none
+                      dark:border-slate-700
+                      dark:bg-slate-900
+                    "
+                  >
+                    {UNITS.map((item) => (
+                      <SelectItem
+                        key={item}
+                        value={item}
+                        className="
+                          rounded-md
+                          px-3
+                          py-2
+                          text-sm
+                          outline-none
+                          focus:bg-orange-50
+                          focus:text-orange-700
+                          dark:focus:bg-orange-950
+                          dark:focus:text-orange-400
+                        "
+                      >
+                        {item}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </div>
 
+        {/* Footer */}
         <div
           className="
             flex
@@ -723,10 +778,8 @@ const UpdateIngredientDialog = ({
             bg-slate-50/70
             px-6
             py-4
-
             sm:flex-row
             sm:justify-end
-
             dark:border-slate-800
             dark:bg-slate-900/50
           "
@@ -734,7 +787,9 @@ const UpdateIngredientDialog = ({
           <Button
             type="button"
             variant="outline"
-            onClick={() => onOpenChange(false)}
+            onClick={() =>
+              onOpenChange(false)
+            }
             disabled={isSaving}
             className="
               h-10
@@ -747,9 +802,7 @@ const UpdateIngredientDialog = ({
               text-slate-700
               shadow-none
               transition-colors
-
               hover:bg-slate-100
-
               dark:border-slate-700
               dark:bg-slate-900
               dark:text-slate-200
@@ -775,15 +828,12 @@ const UpdateIngredientDialog = ({
               text-white
               shadow-none
               transition-colors
-
               hover:border-orange-700
               hover:bg-orange-700
-
               focus-visible:outline-none
               focus-visible:ring-2
               focus-visible:ring-orange-500/30
               focus-visible:ring-offset-2
-
               disabled:cursor-not-allowed
               disabled:opacity-60
             "
